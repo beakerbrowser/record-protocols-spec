@@ -86,7 +86,7 @@ After that a bad reception, I started to think about how we could maintain the g
 
 |Term|Definition|
 |-|-|
-|**Record Protocol**|A set of schema definitions published at a Web address which describe the data-model semantics and permissions.|
+|**Record&nbsp;Protocol**|A set of schema definitions published at a Web address which describe the data-model semantics and permissions.|
 |**Record**|A data object contained in a JSON file.|
 |**Recordset**|A collection of records contained in a dat. It may refer to all the records in the dat, or it may refer to the records under a specific protocol. For instance, the "unwalled.garden recordset" refers to the records which use the "unwalled.garden protocol."|
 
