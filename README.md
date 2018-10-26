@@ -10,6 +10,8 @@ Record Protocols are an alternative to self-describing schemas such as JSON-LD a
 
 Record Protocols instead work by enforcing schema definitions which have been published on the Web. Applications ask the browser to import the schema definitions and then interact with the browser's APIs to read/write data under those definitions. By sharing the globally-published schemas, applications can ensure interoperability, and the browser can ensure accurate metadata and safe permissioning.
 
+### Background
+
 For more information on the background of this spec, open the details below:
 
 <details>
@@ -22,13 +24,13 @@ The [Dat Identities Spec](https://github.com/beakerbrowser/dat-identities-spec) 
 
 This spec is about a next step: data semantics.
 
-### The data semantics challenge
+#### The data semantics challenge
 
 Browsers need high-level semantics in order to give the user a clear sense of what applications are doing. For example, users need to be told "This app wants to manage your Fritter contacts" rather than "This app wants write-access to /data/fritter/contacts."
 
 This is important! Users need to understand what their applications are doing to their data and they need to be able to make informed decisions about permissions. Dat-verse apps also need to be able to share data between themselves, and that coordination is quite important. An app needs to be able to look in a dat profile and say, "Yes I understand this data, let's go!" or "No, this is foreign to me." Ideally this will happen with minimal kludge or bugginess.
 
-### What's wrong with files?
+#### What's wrong with files?
 
 Files are very powerful and simple, but without metadata they aren't user-friendly. They include very little information about what they contain or what purpose they serve. They have no way to describe possible actions except at the "file" or "blob" level; you can describe access in terms of reading or writing chunks of the file, but you can't describe access in terms of modifying the objects or object-relationships it contains. For that, you really need higher level semantics.
 
@@ -41,7 +43,7 @@ Coordination between apps is also a big challenge. When two apps are trying to i
  
 Historically, these kinds of questions have been answered by using standards, but standards processes can be extremely slow and irritating to developers. We want to build apps, not committees! So what's the strategy for solving cross-app coordination?
 
-### Could the browser do it?
+#### Could the browser do it?
 
 In winter of 2017/18, we proposed adding high-level data semantics to the browser itself. We would create a set of standard data formats, schemas, and APIs which everybody shares. This was somewhat reminiscent of Schema.org, in that it would try to create "one entology to rule them all."
 
@@ -68,7 +70,7 @@ After that a bad reception, I started to think about how we could maintain the g
 
 </details>
 
-## Requirements
+### Requirements
 
 |Domain|Requirement|
 |-|-|
@@ -80,7 +82,7 @@ After that a bad reception, I started to think about how we could maintain the g
 ||Permissions **MUST** be easy for the user to understand.|
 ||Permissions **MUST** be fine-grained enough to control the records within files.|
 
-## Definitions
+### Definitions
 
 |Term|Definition|
 |-|-|
@@ -94,7 +96,7 @@ Record Protocols are identified by a domain name. They are expected to publish a
 
 ### Dat type
 
-Record Protocol definition dats must include the [`recordproto`](https://github.com/beakerbrowser/dat-types-spec#recordproto) type.
+Record Protocol definition dats must include the [`recordproto`](https://github.com/beakerbrowser/dat-types-spec#recordproto) type. This type must be set manually by the definition-dat's author.
 
 ### Definition files
 
@@ -123,7 +125,7 @@ Optionally (but recommended) a Record Protocol can include javascript modules fo
 
 ### Dat type
 
-Dats which use record protocols must include the [`recordset`](https://github.com/beakerbrowser/dat-types-spec#recordset) type.
+Dats which store records using record protocols must include the [`recordset`](https://github.com/beakerbrowser/dat-types-spec#recordset) type. This type will be set automatically by the browser when records are first written to the dat.
 
 ### Importing the protocol
 
