@@ -1,6 +1,6 @@
 # Record Protocols Spec
 
-Record Protocols are a Web data model for building interoperable applications on the Web. Their features include:
+Record Protocols are a standard for building interoperable applications on the Web. Its features include:
 
  - Strongly-enforced data schemas,
  - User-friendly metadata, and
