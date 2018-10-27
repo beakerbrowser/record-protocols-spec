@@ -1,8 +1,14 @@
 # FAQ
 
-## How do Protos solve the issue of trust?
+## How are Record Protocols different than RDF?
 
-Protos are motivated by complexities around trust and authority. Questions like:
+Self-describing schemas like JSON-LD and other RDF formats work by encoding every attribute as a URL (eg `bob["foaf.com/name"]`). This solves the problem of ambiguously-defined attributes, but does not provide a solution to overall schema definition (aka "which attributes should be used?") or a solution to security-critical decisions (aka "how should access be described in permission prompts?"). Self-describing schemas are also developer hostile &mdash; nobody wants to reference values by URL-attributes.
+
+Record Protocols instead work by enforcing schema definitions which have been published on the Web. Applications ask the browser to import the schema definitions and then interact with the browser's APIs to read/write data under those definitions. By sharing the globally-published schemas, applications can ensure interoperability, and the browser can ensure accurate metadata and safe permissioning.
+
+## How do Record Protocol solve the issue of trust?
+
+Record Protocol are motivated by complexities around trust and authority. Questions like:
 
  - What do the user's files contain?
  - Which applications can be trusted to describe them?
