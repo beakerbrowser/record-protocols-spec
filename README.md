@@ -73,7 +73,7 @@ After that a bad reception, I started to think about how we could maintain the g
 |Domain|Requirement|
 |-|-|
 |**Data&nbsp;semantics**|Data **MUST** be stored as files on a dat.|
-||Data **MUST** be identified to the user with high-level semantics. (What records the files represent rather than the files' paths.)|
+||Data **MUST** be identified to the user with high-level semantics.|
 ||Applications **MUST** have an interoperable understanding of data.|
 |**Application&nbsp;access&nbsp;control**|Applications **MUST** be able to share data with each other.|
 ||Applications **MUST** request permission to read or write data.|
@@ -101,7 +101,7 @@ Record Protocol definition dats must include the [`recordproto`](https://github.
 A Record Protocol dat must follow this file structure:
 
 ```
-/dat.json        - Standard metadata about this site.
+/dat.json        - Standard metadata about the site.
 /proto.json      - Information about the record protocol.
 /schemas/*.json  - Individual JSON-Schema definitions.
 *.js             - (optional) API modules for accessing the recordset.
