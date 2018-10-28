@@ -1,5 +1,11 @@
 # Record Protocols Spec
 
+---
+
+**Status**: Experimental! This spec is still being drafted and should not be taken too seriously yet.
+
+---
+
 Record Protocols are a standard for building interoperable applications on the Web. Its features include:
 
  - Strongly-enforced data schemas,
@@ -68,7 +74,7 @@ After that a bad reception, I started to think about how we could maintain the g
 
 </details>
 
-### Example
+### Example Flow
 
 An application wants to sign into the user's profile-dat using the [`unwalled.garden` Record Protocol](https://github.com/beakerbrowser/unwalled.garden). It initiates the signin flow with this code:
 
@@ -157,11 +163,7 @@ All files written to those folders will validated by their respective schemas. T
 
 ## Record Protocol definitions
 
-Record Protocols are identified by a domain name. They are expected to publish a set of definition-files in a dat under that domain.
-
-### Dat type `recordproto`
-
-Record Protocol definition dats must include the [`recordproto`](https://github.com/beakerbrowser/dat-types-spec#recordproto) type. This type must be set manually by the definition-dat's author.
+Record Protocols are identified by a domain name. They are expected to publish a set of definition-files in a dat under that domain. Definition dats must include the [`recordproto`](https://github.com/beakerbrowser/dat-types-spec#recordproto) type.
 
 ### Definition files
 
@@ -201,8 +203,6 @@ Optionally (but recommended) a Record Protocol can include javascript modules fo
 
 ## Using Record Protocols
 
-### Dat type `recordset`
-
 Dats which store records using record protocols must include the [`recordset`](https://github.com/beakerbrowser/dat-types-spec#recordset) type. This type will be set automatically by the browser when records are first written to the dat.
 
 ### Importing the protocol
@@ -241,7 +241,7 @@ var session = await UserSession.get()await session.requestSignin({
 // After receiving permission from the user,
 // the app can:
 // - Read, create, and delete files in /records/dats
- //- Read, create, update, and delete in /records/contacts
+// - Read, create, update, and delete in /records/contacts
 ```
 
 If a record protocol specifies a "schema" file for a recordset, then the app will only be able to write `.json` files to the folder, and writes to those folders will be rejected if the JSON files do not validate against the specified schema.
