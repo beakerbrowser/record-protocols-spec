@@ -5,7 +5,7 @@
   "records": {
     "posts": {
       "schema": "/schemas/post.json",
-      "actions": {
+      "permissions": {
         "read": "Read your posts",
         "create": "Publish new posts",
         "update": "Modify your posts",
@@ -14,15 +14,14 @@
     },
     "profile": {
       "schema": "/schemas/profile.json",
-      "single": true,
-      "actions": {
+      "permissions": {
         "read": "Read your profile",
         "update": "Update your profile"
       }
     },
     "media": {
-      "blob": true,
-      "actions": {
+      "schema": false,
+      "permissions": {
         "read": "Read your media attachments",
         "create": "Create media attachments",
         "delete": "Delete media attachments"
