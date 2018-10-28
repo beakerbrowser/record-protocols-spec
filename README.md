@@ -159,9 +159,7 @@ For example, a Record Protocol at `dat://fooproto.com` would be assigned the `/r
 
 ### Web APIs
 
-There are no additional Web APIs for Record Protocols. Applications read and write the record files located under `/records` using the `DatArchive` APIs. This is to ensure that the builtin APIs are minimal, and to avoid the potential for a bloated and/or half-specified database.
-
-Instead, applications should write their own high-level APIs. Record Protocols are recommended to provide their own API modules in their definition dats.
+There are no additional Web APIs for Record Protocols. Applications read and write the record files located under `/records` using the `DatArchive` APIs. This is to ensure that the builtin APIs are minimal and unopinionated. Instead, applications should write their own high-level APIs. Record Protocols are recommended to provide their own API modules.
 
 Internally, Beaker uses the Record Protocols to provide special permissions enforcement and file validation. Applications are only able to read & write files under a `/record` folder after going through the [`requestSignin()`](https://github.com/beakerbrowser/dat-identities-spec/tree/updates#apis) flow and specifying the correct permissions.
 
@@ -169,7 +167,8 @@ Example:
 
 ```js
 // Request access to the 'unwalled.garden' dats and contacts records
-var session = await UserSession.get()await session.requestSignin({
+var session = await UserSession.get()
+await session.requestSignin({
   records: [{
     url: 'unwalled.garden',
     permissions: {
