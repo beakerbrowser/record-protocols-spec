@@ -1,0 +1,32 @@
+{
+  "version": 1.0,
+  "title": "Fritter",
+  "description": "Social media feed",
+  "records": {
+    "posts": {
+      "schema": "/schemas/post.json",
+      "actions": {
+        "read": "Read your posts",
+        "create": "Publish new posts",
+        "update": "Modify your posts",
+        "delete": "Delete your posts"
+      }
+    },
+    "profile": {
+      "schema": "/schemas/profile.json",
+      "single": true,
+      "actions": {
+        "read": "Read your profile",
+        "update": "Update your profile"
+      }
+    },
+    "media": {
+      "blob": true,
+      "actions": {
+        "read": "Read your media attachments",
+        "create": "Create media attachments",
+        "delete": "Delete media attachments"
+      }
+    }
+  }
+}
