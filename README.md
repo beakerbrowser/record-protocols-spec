@@ -92,7 +92,7 @@ After that a bad reception, I started to think about how we could maintain the g
 
 Record Protocols are identified by a domain name. They are expected to publish a set of definition-files in a dat under that domain.
 
-### Dat type
+### Dat type `recordproto`
 
 Record Protocol definition dats must include the [`recordproto`](https://github.com/beakerbrowser/dat-types-spec#recordproto) type. This type must be set manually by the definition-dat's author.
 
@@ -101,15 +101,28 @@ Record Protocol definition dats must include the [`recordproto`](https://github.
 A Record Protocol dat must follow this file structure:
 
 ```
-/dat.json        - Standard metadata about the site.
-/proto.json      - Information about the record protocol.
-/schemas/*.json  - Individual JSON-Schema definitions.
-*.js             - (optional) API modules for accessing the recordset.
+/dat.json          - Standard metadata about the site.
+/recordproto.json  - Information about the record protocol.
+/schemas/*.json    - Individual JSON-Schema definitions.
+*.js               - (optional) API modules for accessing the recordset.
 ```
 
-### The `proto.json` file
+### The `recordproto.json` file
 
-TODO- this file should provide high level descriptions of the recordset, describe how/when each schemas is used, and outline the different permissions which can be requested by apps.
+This file provides a high-level description of the recordset. The browser uses this file to describe the data to the user, drive permissions, and enforce validation.
+
+The file can contain the following fields, see [this example](/examples/fritter.com/recordproto.json) for more information:
+
+  - `version`: optional Number, the version of the record protocol. Can be specified as Major.Minor, e.g. `1.0`, `1.1`, `2.0`. Defaults to `1.0`.
+  - `title`: optional String, the name of the record protocol.
+  - `description`: optional String, a short description of the record protocol.
+  - `records`: required Object, a description of the recordsets present in the protocol. The keys of this object represent the IDs of recordsets, and the values represent descriptions of the recordsets.
+    - `schema`: optional String, a path to a [JSON-Schema draft-07](https://json-schema.org) file which will be used to validate all records written to the recordset's folder. If specified, only `.json` files can be written to the recordset folder. If not specified (or `false`) then the recordset may contain any file.
+    - `permissions`: required Object, a description of the permissions which may be requested by applications. The keys of this object must be one of `read`, `create`, `update`, or `delete`. The value must be a String which describes in user-friendly language what the permission means. These key-values map to the following internal meanings:
+      - `"read"`: The files in the recordset may be accessed using `readDir()`, `stat()`, and `readFile()`.
+      - `"create"`: New files in the recordset may be created using `writeFile()`.
+      - `"update"`: Existing files in the recordset may be modified using `writeFile()`.
+      - `"delete"`: Existing files in the recordset may be deleted using `unlink()`.
 
 ### JSON-Schema files
 
@@ -121,7 +134,7 @@ Optionally (but recommended) a Record Protocol can include javascript modules fo
 
 ## Using Record Protocols
 
-### Dat type
+### Dat type `recordset`
 
 Dats which store records using record protocols must include the [`recordset`](https://github.com/beakerbrowser/dat-types-spec#recordset) type. This type will be set automatically by the browser when records are first written to the dat.
 
@@ -139,4 +152,30 @@ For example, a Record Protocol at `dat://fooproto.com` would be assigned the `/r
 
 ### Web APIs
 
-TODO- web apis for using record protocols
+There are no additional Web APIs for Record Protocols. Applications read and write the record files located under `/records` using the `DatArchive` APIs. This is to ensure that the builtin APIs are minimal, and to avoid the potential for a bloated and/or half-specified database.
+
+Instead, applications should write their own high-level APIs. Record Protocols are recommended to provide their own API modules in their definition dats.
+
+Internally, Beaker uses the Record Protocols to provide special permissions enforcement and file validation. Applications are only able to read & write files under a `/record` folder after going through the [`requestSignin()`](https://github.com/beakerbrowser/dat-identities-spec/tree/updates#apis) flow and specifying the correct permissions.
+
+Example:
+
+```js
+// Request access to the 'unwalled.garden' dats and contacts records
+var session = await UserSession.get()
+await session.requestSignin({
+  records: [{
+    url: 'unwalled.garden',
+    permissions: {
+      dats: ['read', 'create', 'update', 'delete'],
+      contacts: ['read', 'create']
+    }
+  }]
+})
+// After receiving permission from the user,
+// the app can:
+//  - Read, create, update, and delete files in /records/dats
+//  - Read and create files in /records/contacts
+```
+
+If a record protocol specifies a "schema" file for a recordset, then the app will only be able to write `.json` files to the folder, and writes to those folders will be rejected if the JSON files do not validate against the specified schema.
