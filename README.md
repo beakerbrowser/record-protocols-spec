@@ -68,6 +68,73 @@ After that a bad reception, I started to think about how we could maintain the g
 
 </details>
 
+### Example
+
+An application wants to sign into the user's profile-dat using the [`unwalled.garden` Record Protocol](https://github.com/beakerbrowser/unwalled.garden). It initiates the signin flow with this code:
+
+```js
+// Request access to the 'unwalled.garden' dats and contacts records
+var session = await UserSession.get()
+await session.requestSignin({
+  records: [{
+    url: 'unwalled.garden',
+    permissions: {
+      dats: ['read', 'create', 'delete'],
+      contacts: ['read', 'create', 'update', 'delete']
+    }
+  }]
+})
+```
+
+Beaker will fetch the [`dat://unwalled.garden/recordproto.json`](https://github.com/beakerbrowser/unwalled.garden/blob/master/recordproto.json) file, which looks something like this:
+
+```json
+{
+  "version": 1.0,
+  "title": "Unwalled Garden Record Protocol",
+  "description": "Common data types for Web browser applications",
+  "records": {
+    "dats": {
+      "schema": "/schemas/dat.json",
+      "permissions": {
+        "read": "Read your published dats",
+        "create": "Publish new dats to your profile",
+        "delete": "Unpublish dats from your profile"
+      }
+    },
+    "contacts": {
+      "schema": "/schemas/profile.json",
+      "permissions": {
+        "read": "Read your contacts",
+        "create": "Create new contacts",
+        "update": "Modify your existing contacts",
+        "delete": "Remove contacts"
+      }
+    }
+  }
+}
+```
+
+This will prompt the user to confirm that the application would like to sign in, which identity to use, and the following permissions:
+
+ - Know your identity
+ - unwalled.garden dats
+   - Read your published dats
+   - Publish new dats to your profile
+   - Unpublish dats from your profile
+ - unwalled.garden contacts
+   - Read your contacts
+   - Create new contacts
+   - Modify your existing contacts
+   - Remove contacts
+
+After the user approves, the app will be able to:
+
+ - Read, create, and delete files in `/records/dats`
+ - Read, create, update, and delete in `/records/contacts`
+
+All files written to those folders will validated by their respective schemas. The `/records/dats` files will validated against [`dat://unwalled.garden/schemas/dat.json`](https://github.com/beakerbrowser/unwalled.garden/blob/master/schemas/dat.json) on write, and the `/records/contacts` files will be validated against [`dat://unwalled.garden/schemas/contact.json`](https://github.com/beakerbrowser/unwalled.garden/blob/master/schemas/contact.json) on write.
+
 ### Requirements
 
 |Domain|Requirement|
@@ -140,7 +207,7 @@ Dats which store records using record protocols must include the [`recordset`](h
 
 ### Importing the protocol
 
-Applications use Record Protocols by pointing to the domain name (TODO- how?). This directs the browser to download the definition files and read their instructions for managing the recordset.
+Applications use Record Protocols by specifying it during the [`requestSignin()`](https://github.com/beakerbrowser/dat-identities-spec/tree/updates#apis) flow. This directs the browser to download the definition files and read their instructions for managing the recordset.
 
 Once loaded and activated, the browser creates a dedicated directory for the recordset in a target dat. This directory must follow the following path:
 
@@ -162,20 +229,19 @@ Example:
 
 ```js
 // Request access to the 'unwalled.garden' dats and contacts records
-var session = await UserSession.get()
-await session.requestSignin({
+var session = await UserSession.get()await session.requestSignin({
   records: [{
     url: 'unwalled.garden',
     permissions: {
-      dats: ['read', 'create', 'update', 'delete'],
-      contacts: ['read', 'create']
+      dats: ['read', 'create', 'delete'],
+      contacts: ['read', 'create', 'update', 'delete']
     }
   }]
 })
 // After receiving permission from the user,
 // the app can:
-//  - Read, create, update, and delete files in /records/dats
-//  - Read and create files in /records/contacts
+// - Read, create, and delete files in /records/dats
+ //- Read, create, update, and delete in /records/contacts
 ```
 
 If a record protocol specifies a "schema" file for a recordset, then the app will only be able to write `.json` files to the folder, and writes to those folders will be rejected if the JSON files do not validate against the specified schema.
