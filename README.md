@@ -2,7 +2,7 @@
 
 ---
 
-**Status**: Experimental! This spec is still being drafted and should not be taken too seriously yet.
+**Status**: Probably dead.
 
 ---
 
