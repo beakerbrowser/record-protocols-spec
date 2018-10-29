@@ -93,14 +93,6 @@ All files written to those folders will validated by their respective schemas. T
 ||Permissions **MUST** be easy for the user to understand.|
 ||Permissions **MUST** be fine-grained enough to control the records within files.|
 
-### Definitions
-
-|Term|Definition|
-|-|-|
-|**Record&nbsp;Protocol**|A set of schema definitions published at a Web address which describe the data-model semantics and permissions.|
-|**Record**|A data object contained in a JSON file.|
-|**Recordset**|A collection of records contained in a dat. It may refer to all the records in the dat, or it may refer to the records under a specific protocol. For instance, the "unwalled.garden recordset" refers to the records which use the "unwalled.garden protocol."|
-
 ## Record Protocol definitions
 
 Record Protocols are identified by a domain name. They are expected to publish a set of definition-files in a dat under that domain. Definition dats must include the [`recordproto`](https://github.com/beakerbrowser/dat-types-spec#recordproto) type.
