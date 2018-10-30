@@ -2,7 +2,7 @@
 
 ---
 
-**Status**: Probably dead.
+**Status**: Dead. Replaced by the [Beaker User FS Spec](https://github.com/beakerbrowser/beaker-fs-spec).
 
 ---
 
